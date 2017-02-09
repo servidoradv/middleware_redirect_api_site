@@ -1,0 +1,29 @@
+{
+  "name": "middleware_redirect_api_site",
+  "version": "1.0.0",
+  "description": "middleware para fazer redirecionamento de noticias e namidia",
+  "main": "src/middleware.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/servidoradv/middleware_redirect_api_site.git"
+  },
+  "keywords": [
+    "servidoradv",
+    "cassel",
+    "ruzzarin",
+    "middleware"
+  ],
+  "author": "Nilson Soares, Tiago Stutz",
+  "bugs": {
+    "url": "https://github.com/servidoradv/middleware_redirect_api_site/issues"
+  },
+  "homepage": "https://github.com/servidoradv/middleware_redirect_api_site#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "request": "^2.73.0",
+    "querystring": "0.2.0"
+  }
+}
