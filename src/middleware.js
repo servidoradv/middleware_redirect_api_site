@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var querystring = require('querystring');
+var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
@@ -30,9 +31,9 @@ app.use(function (req, res, next) {
         if (!error && response.statusCode == 200) {
           var urlComposition = JSON.parse(body);
           if (urlComposition) {
-            var title = urlComposition.titulo.trim().replace(/\ /g, '-');
+            var title = friendlyUrl(urlComposition.titulo.trim());
 
-            if(type == 'na-midia') {
+            if (type == 'na-midia') {
               type = 'na_midia';
             }
 
@@ -42,14 +43,13 @@ app.use(function (req, res, next) {
               console.log('NOVO: ' + newUrl);
               res.writeHead(301, { 'Location': newUrl });
             } else {
-              redirectToOldUrl(res, req);
+              letItGo(res,next);
             }
           } else {
-            redirectToOldUrl(res, req);
+           letItGo(res,next);
           }
 
-          res.end();
-          next();
+          letItGo(res, next);
           return;
         } else {
           console.log(`houve um erro ao executar a requisição. status=${response.statusCode} | erro=${error}`);
@@ -59,11 +59,9 @@ app.use(function (req, res, next) {
   }
 });
 
-function redirectToOldUrl(res, req) {
-  var oldSiteURL = req.url.replace('www', '');
-  oldSiteURL = 'http://www2.servidor.adv.br' + oldSiteURL;
-  console.log('OLD: ' + oldSiteURL);
-  res.writeHead(302, { 'Location': oldSiteURL });
+function letItGo(res, next) {
+  res.end();
+  next();
 }
 
 app.listen(8084);
