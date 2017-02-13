@@ -5,7 +5,7 @@ var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
-  urlApi: 'http://localhost:51049/api/'
+  urlApi: 'http://servidorapi.brazilsouth.cloudapp.azure.com:80/api/'
 };
 
 app.use(function (req, res, next) {
