@@ -17,7 +17,7 @@ app.use(function (req, res, next) {
     return;
   } else {
     var id = slashesParamArray[slashesParamArray.length - 1];
-    var type = slashesParamArray[slashesParamArray.length - 2];
+    var type = slashesParamArray[slashesParamArray.length - 3];
     console.log(`id do conteudo ${id}`);
     var isNotValidId = isNaN(id) || (id <= 0);
     var isNotValidType = !type;
