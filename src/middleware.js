@@ -5,7 +5,7 @@ var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
-  urlApi: 'http://servidorapi.brazilsouth.cloudapp.azure.com:80/api/'
+  urlApi: 'http://localhost:51049/api/'
 };
 
 app.use(function (req, res, next) {
@@ -25,7 +25,12 @@ app.use(function (req, res, next) {
       next();
       return;
     } else {
-      var getNewUrlService = conf.urlApi + 'public/v1/' + type + '/url-composition/' + id;
+      var typeApi = type;
+      if (typeApi == "na_midia") {
+        typeApi = "na-midia";
+      }
+
+      var getNewUrlService = conf.urlApi + 'public/v1/' + typeApi + '/url-composition/' + id;
 
       request(getNewUrlService, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -33,23 +38,19 @@ app.use(function (req, res, next) {
           if (urlComposition) {
             var title = friendlyUrl(urlComposition.titulo.trim());
 
-            if (type == 'na-midia') {
-              type = 'na_midia';
-            }
-
-            var newUrl = 'http://www.servidor.adv.br/' + type + '/' + title + '/' + urlComposition.id;
+            var newUrl = 'http://www2.servidor.adv.br/' + type + '/' + title + '/' + urlComposition.id;
 
             if (newUrl && newUrl.length > 0) {
               console.log('NOVO: ' + newUrl);
               res.writeHead(301, { 'Location': newUrl });
+              res.end();        
+              next();      
             } else {
-              letItGo(res,next);
+              letItGo(res, next);
             }
           } else {
-           letItGo(res,next);
+            letItGo(res, next);
           }
-
-          letItGo(res, next);
           return;
         } else {
           console.log(`houve um erro ao executar a requisição. status=${response.statusCode} | erro=${error}`);
