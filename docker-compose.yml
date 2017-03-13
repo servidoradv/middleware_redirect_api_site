@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+
+  middleware:
+    build: .
+    image: servidoradv/google_middleware_site_2016:0.1.0
+    restart: always
+    network_mode: bridge
+    ports:
+      - 8084:8084
+    environment:
+      - LOG_TAGS=error,warning
