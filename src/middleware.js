@@ -5,7 +5,7 @@ var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
-  urlApi: 'http://localhost:51049/api/'
+  urlApi: 'http://192.161.186.245/api/'
 };
 
 app.use(function (req, res, next) {
@@ -35,6 +35,7 @@ app.use(function (req, res, next) {
       request(getNewUrlService, function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var urlComposition = JSON.parse(body);
+          console.log(urlComposition);
           if (urlComposition) {
             var title = friendlyUrl(urlComposition.titulo.trim());
 
@@ -42,9 +43,9 @@ app.use(function (req, res, next) {
 
             if (newUrl && newUrl.length > 0) {
               console.log('NOVO: ' + newUrl);
-              res.writeHead(301, { 'Location': newUrl });
-              res.end();        
-              next();      
+              res.writeHead(302, { 'Location': newUrl });
+              res.end();
+              next();
             } else {
               letItGo(res, next);
             }
@@ -54,6 +55,7 @@ app.use(function (req, res, next) {
           return;
         } else {
           console.log(`houve um erro ao executar a requisição. status=${response.statusCode} | erro=${error}`);
+          letItGo(res, next);
         }
       });
     }
@@ -66,4 +68,3 @@ function letItGo(res, next) {
 }
 
 app.listen(8084);
-
