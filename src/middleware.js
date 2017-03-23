@@ -5,7 +5,7 @@ var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
-  urlApi: 'http://192.161.186.245/api/'
+  urlApi: 'http://localhost:51050/api/'
 };
 
 app.use(function (req, res, next) {
@@ -39,7 +39,7 @@ app.use(function (req, res, next) {
           if (urlComposition) {
             var title = friendlyUrl(urlComposition.titulo.trim());
 
-            var newUrl = 'http://www2.servidor.adv.br/' + type + '/' + title + '/' + urlComposition.id;
+            var newUrl = 'http://www2.servidor.adv.br/' + (urlComposition.tipo || type) + '/' + title + '/' + urlComposition.id;
 
             if (newUrl && newUrl.length > 0) {
               console.log('NOVO: ' + newUrl);
