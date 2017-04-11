@@ -5,7 +5,7 @@ var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
-  urlApi: 'http://localhost:51050/api/'
+  urlApi: 'http://192.161.186.245/api/'
 };
 
 app.use(function (req, res, next) {
@@ -31,15 +31,18 @@ app.use(function (req, res, next) {
       }
 
       var getNewUrlService = conf.urlApi + 'public/v1/' + typeApi + '/url-composition/' + id;
-
+      console.log(getNewUrlService);
       request(getNewUrlService, function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var urlComposition = JSON.parse(body);
-          console.log(urlComposition);
+          console.log('urlComp: ' + urlComposition.tipo);
           if (urlComposition) {
             var title = friendlyUrl(urlComposition.titulo.trim());
 
-            var newUrl = 'http://www2.servidor.adv.br/' + (urlComposition.tipo || type) + '/' + title + '/' + urlComposition.id;
+            tipoOriginal = urlComposition.tipo;
+            tipoOriginal = tipoOriginal == "na_midia" ? "na-midia" : tipoOriginal
+            tipoOriginal = tipoOriginal == "noticias" ? "clippings" : tipoOriginal
+            var newUrl = 'http://www2.servidor.adv.br/' + (tipoOriginal || type) + '/' + title + '/' + urlComposition.id;
 
             if (newUrl && newUrl.length > 0) {
               console.log('NOVO: ' + newUrl);
@@ -54,7 +57,8 @@ app.use(function (req, res, next) {
           }
           return;
         } else {
-          console.log(`houve um erro ao executar a requisição. status=${response.statusCode} | erro=${error}`);
+          console.error(error);
+          console.log(`houve um erro ao executar a requisição. status=${response.statusCode}`);
           letItGo(res, next);
         }
       });
