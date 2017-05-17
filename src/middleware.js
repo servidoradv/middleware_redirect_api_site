@@ -5,7 +5,7 @@ var friendlyUrl = require('friendly-url');
 var app = express();
 
 var conf = {
-  urlApi: 'http://192.161.186.245/api/'
+  urlApi: 'http://api.sharepoint.servidor.adv.br/api/'
 };
 
 app.use(function (req, res, next) {
@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
   var slashesParamArray = req.url.split('/');
   var isNotValidArray = !slashesParamArray;
   if (isNotValidArray || req.url.indexOf('www2') != -1) {
-    next();
+    letItGo(res, next);
     return;
   } else {
     var id = slashesParamArray[slashesParamArray.length - 1];
@@ -22,7 +22,7 @@ app.use(function (req, res, next) {
     var isNotValidId = isNaN(id) || (id <= 0);
     var isNotValidType = !type;
     if (isNotValidId || isNotValidType) {
-      next();
+      letItGo(res, next);
       return;
     } else {
       var typeApi = type;
