@@ -24,8 +24,9 @@
   "homepage": "https://github.com/servidoradv/middleware_redirect_api_site#readme",
   "dependencies": {
     "express": "^4.14.0",
-    "request": "^2.73.0",
+    "friendly-url": "1.0.3",
+    "http-proxy": "^1.16.2",
     "querystring": "0.2.0",
-    "friendly-url":"1.0.3"
+    "request": "^2.73.0"
   }
 }

@@ -4,7 +4,7 @@ services:
 
   middleware:
     build: .
-    image: servidoradv/google_middleware_site_2016:0.1.0
+    image: servidoradv/google_middleware_site_2016:0.1.1
     restart: always
     network_mode: bridge
     ports:
