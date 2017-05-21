@@ -8,6 +8,6 @@ services:
     restart: always
     network_mode: bridge
     ports:
-      - 8089:8084
+      - 8089:8881
     environment:
       - LOG_TAGS=error,warning
