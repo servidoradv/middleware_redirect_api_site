@@ -79,8 +79,8 @@ var server = http.createServer((req, res) => {
 
 });
 
-console.log("listening on port 8888")
-server.listen(8888);
+console.log("listening on port 8881")
+server.listen(8881);
 
 // app.use(function (req, res, next) {
 //   console.log('Redirect Middleware activated.');
