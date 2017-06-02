@@ -4,10 +4,10 @@ services:
 
   middleware:
     build: .
-    image: servidoradv/google_middleware_site_2016:0.1.0
+    image: servidoradv/google_middleware_site_2016:0.1.1
     restart: always
     network_mode: bridge
     ports:
-      - 8089:8084
+      - 8881:8881
     environment:
       - LOG_TAGS=error,warning
