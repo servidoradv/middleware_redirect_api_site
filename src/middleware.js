@@ -52,6 +52,11 @@ app.use(function (req, res, next) {
             } else {
               letItGo(res, next);
             }
+          } else if (req.url.indexOf('/noticias/')) {
+            console.log('NOVO: ' + req.url.replace('www.', 'www1.'));
+            res.writeHead(302, { 'Location': req.url.replace('www.', 'www1.') });
+            res.end();
+            next();
           } else {
             letItGo(res, next);
           }
