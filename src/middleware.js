@@ -46,7 +46,6 @@ var server = http.createServer((req, res) => {
   var slashesParamArray = req.url.split('/');
 
 
-
   if (req.url.indexOf('na_midia') != -1 || req.url.indexOf('noticias') != -1) { //url do site antigo
     try {
       var id = slashesParamArray[slashesParamArray.length - 1];
@@ -55,7 +54,10 @@ var server = http.createServer((req, res) => {
       var isNotValidId = isNaN(id) || (id <= 0);
       var isNotValidType = !type;
       if (isNotValidId || isNotValidType) {
-        handleStaticRoute(req.url, res)
+        const result = handleStaticRoute(req.url, res)
+        if (result == null) {
+          res.writeHead(404)
+        }
         return res.end();
         // console.log("Proxying to ", proxiedWebsite);
         // return proxy.web(req, res, { target: proxiedWebsite });
@@ -78,7 +80,10 @@ var server = http.createServer((req, res) => {
                 res.writeHead(302, { 'Location': www1URL });
                 return res.end();
               }else{
-                handleStaticRoute(req.url, res)
+                const result = handleStaticRoute(req.url, res)
+                if (result == null) {
+                  res.writeHead(404)
+                }
                 return res.end();
               }
             }
@@ -113,7 +118,12 @@ var server = http.createServer((req, res) => {
       console.log("ERROOO", e);
     }
   }else{ //continue to the site
-    return proxy.web(req, res, { target: proxiedWebsite });
+    if (result == null) {
+      return proxy.web(req, res, { target: proxiedWebsite });
+    }else{
+      res.writeHead(404)
+      res.end();
+    }
   }
 
 });
@@ -126,7 +136,7 @@ const handleStaticRoute = (url, res) => {
   if (urlTarget.length > 0) {
     res.writeHead(301, { 'Location': '/' + urlTarget[0].target });
   }else{
-    res.writeHead(404)
+    return null
   }
 }
 
