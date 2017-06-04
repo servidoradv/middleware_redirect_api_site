@@ -123,7 +123,7 @@ const handleStaticRoute = (url, res) => {
   })
   console.log(urlTarget);
   if (urlTarget.length > 0) {
-    res.writeHead(302, { 'Location': '/' + el.target });
+    res.writeHead(302, { 'Location': '/' + urlTarget[0].target });
   }else{
     res.writeHead(404)
   }
