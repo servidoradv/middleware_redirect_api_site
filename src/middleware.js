@@ -122,7 +122,6 @@ var server = http.createServer((req, res) => {
     if (result == null) {
       return proxy.web(req, res, { target: proxiedWebsite });
     }else{
-      res.writeHead(404)
       return res.end();
     }
   }
