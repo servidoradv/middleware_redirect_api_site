@@ -118,6 +118,7 @@ var server = http.createServer((req, res) => {
       console.log("ERROOO", e);
     }
   }else{ //continue to the site
+    const result = handleStaticRoute(req.url, res)
     if (result == null) {
       return proxy.web(req, res, { target: proxiedWebsite });
     }else{
