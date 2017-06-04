@@ -55,8 +55,9 @@ var server = http.createServer((req, res) => {
       var isNotValidId = isNaN(id) || (id <= 0);
       var isNotValidType = !type;
       if (isNotValidId || isNotValidType) {
-        console.log("Proxying to ", proxiedWebsite);
-        return proxy.web(req, res, { target: proxiedWebsite });
+        handleStaticRoute(req.url, res)
+        // console.log("Proxying to ", proxiedWebsite);
+        // return proxy.web(req, res, { target: proxiedWebsite });
       } else {
         var typeApi = type;
         if (typeApi == "na_midia") {
@@ -76,15 +77,7 @@ var server = http.createServer((req, res) => {
                 res.writeHead(302, { 'Location': www1URL });
                 return res.end();
               }else{
-                const urlTarget = staticRedirectTable.filter((el) => {
-                  return req.url.indexOf(el.origin) != -1
-                })
-                console.log(urlTarget);
-                if (urlTarget.length > 0) {
-                  res.writeHead(302, { 'Location': '/' + el.target });
-                }else{
-                  res.writeHead(404)
-                }
+                handleStaticRoute(req.url, res)
                 return res.end();
               }
             }
@@ -123,6 +116,19 @@ var server = http.createServer((req, res) => {
   }
 
 });
+
+const handleStaticRoute = (url, res) => {
+  const urlTarget = staticRedirectTable.filter((el) => {
+    return url.indexOf(el.origin) != -1
+  })
+  console.log(urlTarget);
+  if (urlTarget.length > 0) {
+    res.writeHead(302, { 'Location': '/' + el.target });
+  }else{
+    res.writeHead(404)
+  }
+}
+
 console.log("listening on port 8881")
 server.listen(8881);
 
