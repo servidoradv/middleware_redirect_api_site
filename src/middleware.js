@@ -12,11 +12,40 @@ var conf = {
 const proxiedWebsite = `http://${process.env.PROXIED_WEBSITE}`
 var proxy = httpProxy.createProxyServer({});
 
+const staticRedirectTable = [
+  {
+    origin: 'noticias.html',
+    target: 'informes'
+  },
+  {
+    origin: 'todas_noticias',
+    target: 'informes'
+  },
+  {
+    origin: 'interesses-clientes',
+    target: 'areas-atuacao'
+  },
+  {
+    origin: 'app',
+    target: 'areas-atuacao'
+  },
+  {
+    origin: 'perfis',
+    target: 'areas-atuacao'
+  },
+  {
+    origin: 'perfil-cliente',
+    target: 'areas-atuacao'
+  }
+]
+
 console.log("STARTING Middleware...");
 var server = http.createServer((req, res) => {
 
   console.log('Redirect Middleware activated.');
   var slashesParamArray = req.url.split('/');
+
+
 
   if (req.url.indexOf('na_midia') != -1 || req.url.indexOf('noticias') != -1) { //url do site antigo
     try {
@@ -40,13 +69,22 @@ var server = http.createServer((req, res) => {
           if (!error && response.statusCode == 200) {
             var urlComposition = JSON.parse(body);
             if (urlComposition == null) {
+              console.log('req.url', req.url);
               if (req.url.indexOf('/noticias/') != -1) {
                 const www1URL = 'http://www1.servidor.adv.br' + req.url
                 console.log('WWW1 ==> ' + www1URL);
                 res.writeHead(302, { 'Location': www1URL });
                 return res.end();
               }else{
-                res.writeHead(404)
+                const urlTarget = staticRedirectTable.filter((el) => {
+                  return req.url.indexOf(el.origin) != -1
+                })
+                console.log(urlTarget);
+                if (urlTarget.length > 0) {
+                  res.writeHead(302, { 'Location': '/' + el.target });
+                }else{
+                  res.writeHead(404)
+                }
                 return res.end();
               }
             }
@@ -57,7 +95,7 @@ var server = http.createServer((req, res) => {
               tipoOriginal = urlComposition.tipo;
               tipoOriginal = tipoOriginal == "na_midia" ? "na-midia" : tipoOriginal
               tipoOriginal = tipoOriginal == "noticias" ? "clippings" : tipoOriginal
-              var newUrl = 'http://www2.servidor.adv.br/' + (tipoOriginal || type) + '/' + title + '/' + urlComposition.id;
+              var newUrl = 'http://www.servidor.adv.br/' + (tipoOriginal || type) + '/' + title + '/' + urlComposition.id;
 
               if (newUrl && newUrl.length > 0) {
                 console.log('NOVO: ' + newUrl);
@@ -70,11 +108,6 @@ var server = http.createServer((req, res) => {
               return proxy.web(req, res, { target: proxiedWebsite });
             }
 
-          } else if (req.url.indexOf('/noticias/') != -1) {
-            const www1URL = 'http://www1.servidor.adv.br' + req.url
-            console.log('WWW1 ==> ' + www1URL);
-            res.writeHead(302, { 'Location': www1URL });
-            return res.end();
           } else {
             console.error(error);
             console.log(`houve um erro ao executar a requisição. status=${response.statusCode}`);
@@ -97,7 +130,7 @@ server.listen(8881);
 //   console.log('Redirect Middleware activated.');
 //   var slashesParamArray = req.url.split('/');
 //   var isNotValidArray = !slashesParamArray;
-//   if (isNotValidArray || req.url.indexOf('www2') != -1) {
+//   if (isNotValidArray || req.url.indexOf('www') != -1) {
 //     letItGo(res, next);
 //     return;
 //   } else {
@@ -127,7 +160,7 @@ server.listen(8881);
 //             tipoOriginal = urlComposition.tipo;
 //             tipoOriginal = tipoOriginal == "na_midia" ? "na-midia" : tipoOriginal
 //             tipoOriginal = tipoOriginal == "noticias" ? "clippings" : tipoOriginal
-//             var newUrl = 'http://www2.servidor.adv.br/' + (tipoOriginal || type) + '/' + title + '/' + urlComposition.id;
+//             var newUrl = 'http://www.servidor.adv.br/' + (tipoOriginal || type) + '/' + title + '/' + urlComposition.id;
 //
 //             if (newUrl && newUrl.length > 0) {
 //               console.log('NOVO: ' + newUrl);
