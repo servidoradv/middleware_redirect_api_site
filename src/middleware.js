@@ -42,7 +42,7 @@ const staticRedirectTable = [
 console.log("STARTING Middleware...");
 var server = http.createServer((req, res) => {
 
-  console.log('Redirect Middleware activated.');
+  console.log('Redirect Middleware activated... ' + req.url);
   var slashesParamArray = req.url.split('/');
 
 
@@ -124,7 +124,7 @@ const handleStaticRoute = (url, res) => {
   })
   console.log(urlTarget);
   if (urlTarget.length > 0) {
-    res.writeHead(302, { 'Location': '/' + urlTarget[0].target });
+    res.writeHead(301, { 'Location': '/' + urlTarget[0].target });
   }else{
     res.writeHead(404)
   }
