@@ -56,6 +56,7 @@ var server = http.createServer((req, res) => {
       var isNotValidType = !type;
       if (isNotValidId || isNotValidType) {
         handleStaticRoute(req.url, res)
+        return res.end();
         // console.log("Proxying to ", proxiedWebsite);
         // return proxy.web(req, res, { target: proxiedWebsite });
       } else {
