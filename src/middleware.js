@@ -40,8 +40,15 @@ var server = http.createServer((req, res) => {
           if (!error && response.statusCode == 200) {
             var urlComposition = JSON.parse(body);
             if (urlComposition == null) {
-              res.writeHead(404)
-              return res.end();
+              if (req.url.indexOf('/noticias/') != -1) {
+                console.log('WWW1: ' + req.url.replace('www.', 'www1.'));
+                res.writeHead(302, { 'Location': req.url.replace('www.', 'www1.') });
+                res.end();
+                return next();
+              }else{                
+                res.writeHead(404)
+                return res.end();
+              }
             }
             console.log('urlComp: ' + urlComposition.tipo);
             if (urlComposition) {
