@@ -135,6 +135,7 @@ const handleStaticRoute = (url, res) => {
   console.log(urlTarget);
   if (urlTarget.length > 0) {
     res.writeHead(301, { 'Location': '/' + urlTarget[0].target });
+    return urlTarget;
   }else{
     return null
   }
