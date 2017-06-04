@@ -70,8 +70,9 @@ var server = http.createServer((req, res) => {
             }
 
           } else if (req.url.indexOf('/noticias/') != -1) {
-            console.log('WWW1: ' + req.url.replace('www.', 'www1.'));
-            res.writeHead(302, { 'Location': req.url.replace('www.', 'www1.') });
+            const www1URL = 'http://www1.servidor.adv.br/' + req.url
+            console.log('WWW1: ' + www1URL);
+            res.writeHead(302, { 'Location': www1URL });
             return res.end();
           } else {
             console.error(error);
