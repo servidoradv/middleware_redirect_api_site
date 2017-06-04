@@ -43,9 +43,8 @@ var server = http.createServer((req, res) => {
               if (req.url.indexOf('/noticias/') != -1) {
                 console.log('WWW1: ' + req.url.replace('www.', 'www1.'));
                 res.writeHead(302, { 'Location': req.url.replace('www.', 'www1.') });
-                res.end();
-                return next();
-              }else{                
+                return res.end();
+              }else{
                 res.writeHead(404)
                 return res.end();
               }
@@ -73,8 +72,7 @@ var server = http.createServer((req, res) => {
           } else if (req.url.indexOf('/noticias/') != -1) {
             console.log('WWW1: ' + req.url.replace('www.', 'www1.'));
             res.writeHead(302, { 'Location': req.url.replace('www.', 'www1.') });
-            res.end();
-            return next();
+            return res.end();
           } else {
             console.error(error);
             console.log(`houve um erro ao executar a requisição. status=${response.statusCode}`);
