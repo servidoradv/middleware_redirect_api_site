@@ -41,7 +41,7 @@ var server = http.createServer((req, res) => {
             var urlComposition = JSON.parse(body);
             if (urlComposition == null) {
               if (req.url.indexOf('/noticias/') != -1) {
-                const www1URL = 'http://www1.servidor.adv.br/' + req.url
+                const www1URL = 'http://www1.servidor.adv.br' + req.url
                 console.log('WWW1 ==> ' + www1URL);
                 res.writeHead(302, { 'Location': www1URL });
                 return res.end();
@@ -71,7 +71,7 @@ var server = http.createServer((req, res) => {
             }
 
           } else if (req.url.indexOf('/noticias/') != -1) {
-            const www1URL = 'http://www1.servidor.adv.br/' + req.url
+            const www1URL = 'http://www1.servidor.adv.br' + req.url
             console.log('WWW1 ==> ' + www1URL);
             res.writeHead(302, { 'Location': www1URL });
             return res.end();
