@@ -99,7 +99,7 @@ var server = http.createServer((req, res) => {
               if (newUrl && newUrl.length > 0) {
                 console.log('NOVO: ' + newUrl);
                 res.writeHead(302, { 'Location': newUrl });
-                res.end();
+                return res.end();
               } else {
                 return proxy.web(req, res, { target: proxiedWebsite });
               }
@@ -123,7 +123,7 @@ var server = http.createServer((req, res) => {
       return proxy.web(req, res, { target: proxiedWebsite });
     }else{
       res.writeHead(404)
-      res.end();
+      return res.end();
     }
   }
 
