@@ -42,7 +42,7 @@ const staticRedirectTable = [
 console.log("STARTING Middleware...");
 var server = http.createServer((req, res) => {
 
-  console.log('Redirect Middleware activated... ' + req.url);
+  // console.log('Redirect Middleware activated... ' + req.url);
   var slashesParamArray = req.url.split('/');
 
 
@@ -50,7 +50,7 @@ var server = http.createServer((req, res) => {
     try {
       var id = slashesParamArray[slashesParamArray.length - 1];
       var type = slashesParamArray[slashesParamArray.length - 3];
-      console.log(`id do conteudo ${id}`);
+      // console.log(`id do conteudo ${id}`);
       var isNotValidId = isNaN(id) || (id <= 0);
       var isNotValidType = !type;
       if (isNotValidId || isNotValidType) {
@@ -68,15 +68,12 @@ var server = http.createServer((req, res) => {
         }
 
         var getNewUrlService = conf.urlApi + 'public/v1/' + typeApi + '/url-composition/' + id;
-        console.log(getNewUrlService);
         request(getNewUrlService, function (error, response, body) {
           if (!error && response.statusCode == 200) {
             var urlComposition = JSON.parse(body);
             if (urlComposition == null) {
-              console.log('req.url', req.url);
               if (req.url.indexOf('/noticias/') != -1) {
                 const www1URL = 'http://www1.servidor.adv.br' + req.url
-                console.log('WWW1 ==> ' + www1URL);
                 res.writeHead(302, { 'Location': www1URL });
                 return res.end();
               }else{
@@ -87,7 +84,6 @@ var server = http.createServer((req, res) => {
                 return res.end();
               }
             }
-            console.log('urlComp: ' + urlComposition.tipo);
             if (urlComposition) {
               var title = friendlyUrl(urlComposition.titulo.trim());
 
@@ -97,7 +93,7 @@ var server = http.createServer((req, res) => {
               var newUrl = 'http://www.servidor.adv.br/' + (tipoOriginal || type) + '/' + title + '/' + urlComposition.id;
 
               if (newUrl && newUrl.length > 0) {
-                console.log('NOVO: ' + newUrl);
+                // console.log('NOVO: ' + newUrl);
                 res.writeHead(302, { 'Location': newUrl });
                 return res.end();
               } else {
@@ -129,6 +125,11 @@ var server = http.createServer((req, res) => {
 });
 
 const handleStaticRoute = (url, res) => {
+
+  if (url.indexOf('/boletim/') != -1) {
+    res.writeHead(302, { 'Location': 'http://www1.servidor.adv.br' + url });
+    return '/boletim/';
+  }
   const urlTarget = staticRedirectTable.filter((el) => {
     return url.indexOf(el.origin) != -1
   })
